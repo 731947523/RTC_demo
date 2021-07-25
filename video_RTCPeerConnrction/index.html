@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <title>video_RTCPeerConnrction</title>
+</head>
+<body> 
+    <video id="localVideo" playsinline controls muted autoplay></video>
+    <video id="remoteVideo" playsinline controls muted></video>
+
+    <div>
+      <button id="startButton">Start</button>
+      <button id="callButton">call</button>
+    </div>
+    <script>
+        
+        let leftVideo = document.querySelector('#localVideo')
+        let remoteVideo = document.querySelector('#remoteVideo')
+
+        let startButton = document.querySelector('#startButton')
+        let callButton = document.querySelector('#callButton')
+
+        let localStream
+        let remoteStream
+
+        let localPeerConnection
+        let remotePeerConnection
+
+
+        let offerOptions = {
+            offerToReceiveVideo: 1
+        }
+
+        let constraints = {
+            video: {
+                with: 320,
+                height: 280
+            },
+            audio: true
+        }
+
+        setTimeout(() => {
+            startButtonFun()
+        }, 500);
+
+        // startButton.addEventListener('click', startButtonFun)
+        callButton.addEventListener('click', callAction)
+
+        function startButtonFun (){
+            navigator.mediaDevices.getUserMedia(constraints).then(stream=>{
+                leftVideo.srcObject = stream
+                localStream = stream
+            }).catch(err=>{
+                console.log('获取设备出现错误--', err);
+            })
+        }
+
+
+        function setSessionDescriptionError(error){
+            console.error('错误的集合-----', error);
+        }
+
+        function setLocalDescriptionSuccess(peerConnection){
+            console.log('本地链接成功----', peerConnection);
+        }
+
+        function createdOffer(description){
+            localPeerConnection.setLocalDescription(description).then(()=>{
+                setLocalDescriptionSuccess(localPeerConnection)
+            }).catch(setSessionDescriptionError)
+
+            console.log('----------------------------------------------------');
+            
+            remotePeerConnection.setRemoteDescription(description).then((e)=>{
+                console.log('创建的是本地的发起请求 offer------', e)
+            }).catch(setSessionDescriptionError)
+
+            remotePeerConnection.createAnswer().then(createdAnswer).catch(setSessionDescriptionError)
+        }
+
+        function createdAnswer(description){
+            console.log('创建的是远端的响应 answer--1', description);
+            remotePeerConnection.setLocalDescription(description).then((e)=>{
+                console.log('远端去建立本地的udp链接, 建立成功--', e);
+            }).catch(setSessionDescriptionError)
+
+            localPeerConnection.setRemoteDescription(description).then(e=>{
+                console.log('本地去建立远端的连接---success', e);
+            }).catch(setSessionDescriptionError)
+        }
+
+        function getConnectionName(otherPeer){
+           return otherPeer == localPeerConnection ? remotePeerConnection : localPeerConnection
+        }
+        function icecandidateHandle(event){
+            const peerConnection = event.target
+            const iceCandidate = event.candidate
+            if(iceCandidate){
+                const newIceCandidate = new RTCIceCandidate(iceCandidate)
+                const otherPeer = getConnectionName(peerConnection)
+                otherPeer.addIceCandidate(newIceCandidate).then(()=>{}).catch(setSessionDescriptionError)
+            }
+        }
+
+        function callAction(){
+            console.log('getVideoTracks---', localStream);
+            let videoTracks = localStream.getVideoTracks()
+            let audioTracks = localStream.getAudioTracks()
+
+            if(videoTracks.length > 0){
+                console.log('use video device：',  videoTracks[0].label);
+            }
+            if(audioTracks.length > 0){
+                console.log('use audio device：',  audioTracks[0].label);
+            }
+
+            const servers = null
+            localPeerConnection = new RTCPeerConnection(servers)
+            // 增加icecandidate的时间处理函数
+            localPeerConnection.onicecandidate = icecandidateHandle
+            //  icecandidate的对点链接变化
+            localPeerConnection.oniceconnectionstatechange = function(event){
+                console.log(`localPeerConnection 的 oniceconnectionstatechange--`, event);
+            }
+            window.localPeerConnection = localPeerConnection
+
+
+            remotePeerConnection = new RTCPeerConnection(servers)
+            remotePeerConnection.onicecandidate = icecandidateHandle
+            // function (event){
+            //     console.log(`remotePeerConnection 的 onicecandidate事件--`, event);
+            //     const peerConnection = event.target
+            //     const iceCandidate = event.candidate
+            //     if(iceCandidate){
+            //         const newIceCandidate = new RTCIceCandidate(iceCandidate)
+            //         const otherPeer = localPeerConnection
+            //         otherPeer.addIceCandidate(newIceCandidate).then(()=>{
+            //             console.log('其他的2');
+            //         }).catch(setSessionDescriptionError)
+            //     }
+            // }
+            remotePeerConnection.oniceconnectionstatechange = function(event){
+                console.log(`remotePeerConnection 的 oniceconnectionstatechange--`, event);
+            }
+            // 远端监听加入的stream
+            remotePeerConnection.addEventListener('addstream', function(event){
+                const mediaStream = event.stream
+                console.log('监听到addstream ---', event, mediaStream);
+                remoteVideo.srcObject = mediaStream
+                remoteStream = mediaStream
+            })
+            localPeerConnection.addStream(localStream)
+            console.log('走到了本地点通信 添加 本地流');
+    
+            // setSessionDescriptionError=>{ console.log('发起 连接的请求  出现错误--', setSessionDescriptionError}
+            localPeerConnection.createOffer(offerOptions).then(createdOffer).catch(setSessionDescriptionError)
+        }
+
+
+
+    </script>
+</body>
+</html>
