@@ -1,0 +1,21 @@
+{
+  "name": "webRTC",
+  "version": "1.0.0",
+  "description": "练习webrtc相关内容",
+  "author": "731947523@qq.com",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
