@@ -6,7 +6,14 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "nodemon": "^2.0.12"
+    "express": "^4.17.1",
+    "koa": "^2.13.1",
+    "koa-html-render": "^1.0.3",
+    "koa-route": "^3.2.0",
+    "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
+    "nodemon": "^2.0.12",
+    "serve-index": "^1.9.1"
   },
   "devDependencies": {},
   "engines": {

@@ -1,25 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>录制</title>
-</head>
-<body>
-    <button class="start">开播</button>
-    <button class="record">开启录制</button>
-    <button class="play">播放</button>
-    <button>下载</button>
-    <div></div>
-    <video class="startVideo" autoplay></video>
-    <video class="recordVideo" autoplay></video>
-    <div class="error">
-        错误信息: <span>无</span>
-    </div>
-</body>
-<script>
-    window.onload = function(){
+
         let start = document.querySelector('.start')
         let record = document.querySelector('.record')
         let play = document.querySelector('.play')
@@ -96,6 +75,3 @@
             recordDom.controls = true;
             recordDom.play();
         })
-    }
-</script>
-</html>
