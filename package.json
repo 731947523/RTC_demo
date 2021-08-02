@@ -4,8 +4,10 @@
   "description": "练习webrtc相关内容",
   "author": "731947523@qq.com",
   "private": true,
-  "scripts": {},
-  "pre-commit":[
+  "scripts": {
+    "lint": "eslint callVideo --ext .js"
+  },
+  "pre-commit": [
     "eslint"
   ],
   "dependencies": {
@@ -18,7 +20,9 @@
     "nodemon": "^2.0.12",
     "serve-index": "^1.9.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  },
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"

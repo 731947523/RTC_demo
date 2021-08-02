@@ -2,7 +2,7 @@
 if (!location.hash) {
     location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
 }
-const roomHash = location.hash.substring(1)
+let roomHash = location.hash.substring(1);
  
 console.log('第二次的提交')
 console.log(roomHash, 'roomHash--查看地址---');
