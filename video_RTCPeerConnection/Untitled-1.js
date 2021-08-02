@@ -1,5 +1,5 @@
 'use strict'
-
+console.log('look')
 // Set up media stream constant and parameters.
 
 // In this codelab, you will be streaming video only: "video: true".
