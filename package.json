@@ -10,7 +10,7 @@
   },
   "pre-commit": [
     "eslint",
-    "lint"
+    "fix"
   ],
   "dependencies": {
     "express": "^4.17.1",
