@@ -10,9 +10,9 @@ let express = require('express')
 let serverIndex = require('serve-index')
 
 const app = new Koa()
-// let _mkdir = 'MediaRecord'
-// let _path = path.join(path.resolve(__dirname) +'/../' + _mkdir)
-let _path = 'D:/Downloads/API-Examples-Web-main/API-Examples-Web-main/Demo'
+let _mkdir = 'callVideo'
+let _path = path.join(path.resolve(__dirname) +'/../' + _mkdir)
+// let _path = 'D:/Downloads/API-Examples-Web-main/API-Examples-Web-main/Demo'
 console.log(_path);
 console.log('路径1----', path.resolve(__dirname));
 const main = serve(_path);
