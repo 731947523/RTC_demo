@@ -5,12 +5,12 @@
   "author": "731947523@qq.com",
   "private": true,
   "scripts": {
-    "lint": "eslint server --ext .js",
-    "fix": "eslint server --ext .js --fix"
+    "lint": "eslint video_RTCPeerConnection --ext .js",
+    "fix": "eslint MediaRecord --ext .js --fix"
   },
   "pre-commit": [
     "eslint",
-    "npm run fix"
+    "lint"
   ],
   "dependencies": {
     "express": "^4.17.1",

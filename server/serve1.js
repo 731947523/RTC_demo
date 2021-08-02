@@ -37,17 +37,17 @@ var server = http
         }
       })
     } else if(url != '/'){
-        var surl ='/video_RTCPeerConnrction' + url;
-        console.log(surl, 777);
+        var surl ='/video_RTCPeerConnrction' + url
+        console.log(surl, 777)
         // var type = surl.substr(surl.lastIndexOf(".")+1,surl.length)
-        res.writeHead(200,{'Content-type':"text/javascript"});
+        res.writeHead(200,{'Content-type':'text/javascript'})
         fs.readFile(surl, function(err, data) {
             if (err) {
-                console.error(err);
-                return;
+                console.error(err)
+                return
             }
-            res.end(data);
-        });
+            res.end(data)
+        })
 
     }
   })

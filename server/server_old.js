@@ -1,26 +1,26 @@
-var app = require('express')();
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
+var app = require('express')()
+var fs = require('fs')
+var http = require('http')
+var https = require('https')
 
-var privateKey  = fs.readFileSync('./privatekey.pem', 'utf8'); //密钥路径,编码
-var certificate = fs.readFileSync('./certificate.pem', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
+var privateKey  = fs.readFileSync('./privatekey.pem', 'utf8') //密钥路径,编码
+var certificate = fs.readFileSync('./certificate.pem', 'utf8')
+var credentials = {key: privateKey, cert: certificate}
 
 var documentRoot = './video_RTCPeerConnrction/index.html'
 
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
-var PORT = 3030; //http 端口
-var SSLPORT = 443; //https 端口
+var httpServer = http.createServer(app)
+var httpsServer = https.createServer(credentials, app)
+var PORT = 3030 //http 端口
+var SSLPORT = 443 //https 端口
  
 httpServer.listen(PORT, function() {
-    console.log('HTTP Server is running on: http://localhost:%s', PORT);
-});
+    console.log('HTTP Server is running on: http://localhost:%s', PORT)
+})
 
 httpsServer.listen(SSLPORT, function() {
-    console.log('HTTPS Server is running on: https://localhost:%s', SSLPORT);
-});
+    console.log('HTTPS Server is running on: https://localhost:%s', SSLPORT)
+})
  
 
 // var server = http.createServer(function(req, res) {
@@ -73,4 +73,4 @@ app.get('/', function(req, res) {
     // }else {
     //     res.status(200).send('Welcome http!');
     // }
-});
+})
