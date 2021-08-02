@@ -5,6 +5,9 @@
   "author": "731947523@qq.com",
   "private": true,
   "scripts": {},
+  "pre-commit":[
+    "eslint"
+  ],
   "dependencies": {
     "express": "^4.17.1",
     "koa": "^2.13.1",
