@@ -6,10 +6,10 @@
   "private": true,
   "scripts": {
     "lint": "eslint video_RTCPeerConnection --ext .js",
-    "fix": "eslint MediaRecord --ext .js --fix"
+    "fix": "eslint video_RTCPeerConnection --ext .js --fix"
   },
   "pre-commit": [
-    "eslint",
+    "lint",
     "fix"
   ],
   "dependencies": {
@@ -23,7 +23,8 @@
     "serve-index": "^1.9.1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0"
+    "eslint": "^7.32.0",
+    "pre-commit": "^1.2.2"
   },
   "engines": {
     "node": ">= 6.0.0",
