@@ -5,10 +5,12 @@
   "author": "731947523@qq.com",
   "private": true,
   "scripts": {
-    "lint": "eslint callVideo --ext .js"
+    "lint": "eslint server --ext .js",
+    "fix": "eslint server --ext .js --fix"
   },
   "pre-commit": [
-    "eslint"
+    "eslint",
+    "npm run fix"
   ],
   "dependencies": {
     "express": "^4.17.1",
