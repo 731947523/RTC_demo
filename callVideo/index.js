@@ -4,6 +4,7 @@ if (!location.hash) {
 }
 const roomHash = location.hash.substring(1)
  
+console.log('第二次的提交')
 console.log(roomHash, 'roomHash--查看地址---');
 let localVideo = document.querySelector('.local')
 // let remoteVideo = document.querySelector('.remote')
