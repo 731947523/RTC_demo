@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- , user-scalabel=0.0 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.9.1/vconsole.min.js"></script>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div class="center">
+        <video src="https://www.w3school.com.cn/example/html5/mov_bbb.mp4" playsinline controls autoplay></video>
+        <p class="control">
+            <button class="join">全屏</button>
+            <button class="quit">退出全屏</button>
+        </p>
+    </div>
+    <script>
+        /* 
+        *   https://developer.mozilla.org/zh-CN/docs/Web/API/Fullscreen_API     可随时查看兼容性
+        *   requestFullscreen() 兼容性
+        *   Chrome  71↑     WebView Android     71↑  
+        *   Edge    79↑     Chrome Android      71↑  
+        *   Firefox 64↑     Firefox for Android 64↑     
+        *   Opera   58↑     Opera Android       50↑  
+        *   Safari  6↑      Safari on iOS       no
+        *   IE      no      
+        *                   Samsung Internet    10↑
+        */
+        window.onload = function(){
+            
+            let videoWrap = document.querySelector('.center')
+            let videoScreenDom = document.querySelector('.center video')
+            let fullscreenJoin = document.querySelector('.center .join')
+            let fullscreenQuit = document.querySelector('.center .quit')
+            let fullScreenStatus = 'fullScreen'
+
+            var con = new VConsole()
+            window.video = {videoScreenDom:videoScreenDom,videoWrap:videoWrap}
+
+            fullscreenJoin.addEventListener('click', fullscreenJoinFun)
+            function fullscreenJoinFun(){
+                // if(!document.fullscreenEnabled) return new Error('fullscreen is not support...')     pc safari下存在问题    回头查看
+                if (videoWrap.requestFullscreen) (console.log(1),videoWrap.requestFullscreen())
+                else if (videoWrap.webkitRequestFullscreen) (console.log(2),videoWrap.webkitRequestFullscreen())
+                else if (videoWrap.mozRequestFullScreen) (console.log(3),videoWrap.mozRequestFullScreen())
+                else if (videoWrap.msRequestFullscreen) (console.log(4),videoWrap.msRequestFullscreen())
+                // else
+                else  {
+                    console.log('finally is fullScreenJoin failed...  ')
+                    videoScreenJoin()
+                }
+            }
+            fullscreenQuit.addEventListener('click', fullscreenQuitFun)
+            function fullscreenQuitFun(){
+                if (document.exitFullscreen) document.exitFullscreen()
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen()
+                else if (document.mozCancelFullScreen) document.mozCancelFullScreen()
+                else if (document.msExitFullscreen) document.msExitFullscreen()
+                else {
+                    console.log('finally is fullscreenQuit failed...  ')
+                    videoScreenQuit()
+                }
+            }
+            
+            /* 
+            *   不建议直接执行Video的fullscreen事件，如果直接执行，则不会展示相关dom，会直接让手机自身去接管Video，不符合业务和UI的逻辑
+            *   仅能监听到fullscreen事件，监听不到Video全屏的事件           
+            */
+            document.addEventListener('fullscreenchange',function(e){
+                console.log('dom发生了全屏', e);
+                if(document.fullscreenElement){
+                    fullScreenStatus = 'fullScreen'
+                }else{
+                    fullScreenStatus = 'nofullScreen'
+                }
+            })
+
+            document.addEventListener('onfullscreenerror', function(e) {
+                console.log('fullscreen appear error...', e)
+                throw {code: 110, message: 'fullscreen appear error'}
+            })
+
+
+
+            /* 
+            *   针对Mobile Safari 执行的监听
+            *   *****   注：针对此的进入和退出要操作的可与其他的进行合并操作  ***** 
+            */
+            videoScreenDom.addEventListener('webkitbeginfullscreen', function(){
+                fullScreenStatus = 'fullScreen'
+            })
+            
+            videoScreenDom.addEventListener('webkitendfullscreen', function(){
+                fullScreenStatus = 'nofullScreen'
+                setTimeout(() => { videoScreenDom.play()  }, 200);
+            })
+
+            /* 
+            *   当fullscreen不起作用时进行执行 webkitEnterFullScree  
+            *   https://developer.apple.com/documentation/webkitjs/htmlvideoelement/1633500-webkitenterfullscreen
+            *   额外执行Video的fullscreen事件
+            */
+            function videoScreenJoin(){
+                try {
+                    if(videoScreenDom.webkitEnterFullScreen) videoScreenDom.webkitEnterFullScreen()
+                    else if (videoScreenDom.requestFullscreen) videoScreenDom.requestFullscreen()
+                    else if (videoScreenDom.webkitRequestFullscreen) videoScreenDom.webkitRequestFullscreen()
+                    else if (videoScreenDom.mozRequestFullScreen) videoScreenDom.mozRequestFullScreen()
+                    else if (videoScreenDom.msRequestFullscreen) videoScreenDom.msRequestFullscreen()
+                    else throw ({code: '110', message: 'Failed to execute full screen of video..'})
+                } catch (error) {
+                    console.error('看到此消息,可以开启执行伪全屏方案----进入全屏');
+                    console.log('捕获到的错误信息', error);
+                }
+
+            }
+            function videoScreenQuit(){
+                try {
+                    if(videoScreenDom.webkitExitFullscreen) videoScreenDom.webkitExitFullscreen()
+                    if (videoScreenDom.exitFullscreen) videoScreenDom.exitFullscreen()
+                    else if (videoScreenDom.webkitExitFullscreen) videoScreenDom.webkitExitFullscreen()
+                    else if (videoScreenDom.mozCancelFullScreen) videoScreenDom.mozCancelFullScreen()
+                    else if (videoScreenDom.msExitFullscreen) videoScreenDom.msExitFullscreen()
+                    else throw ({code: '110', message: 'Failed to quit full screen of video..'})
+                } catch (error) {
+                    console.error('看到此消息,可以开启执行伪全屏方案----退出全屏');
+                    console.log('捕获到的错误信息', error);
+                }
+            }
+
+
+
+            videoScreenDom.addEventListener('play', ()=>{
+                console.log('开始了自动的播放---');
+            })
+            videoScreenDom.addEventListener('pause', function () {
+                console.log("暂停播放");
+            });
+
+        }
+
+    </script>
+</body>
+</html>
