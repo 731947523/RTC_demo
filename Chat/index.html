@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:1聊天  look socket</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        .div{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>socket</h1>
+    <ul class="oUl">
+
+    </ul>
+    <div class="div">
+        <input type="text" class="inp">
+        <button class="but">
+            发送
+        </button>
+    </div>
+</body>
+<script type="module" src="./../node_modules/socket.io/client-dist/socket.io.js"></script>
+<script type="module">
+    // const io = require('socket.io-client')
+    var socket = window.io('http://localhost:3000');
+    socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
+    $('.but')[0].addEventListener('click', (e)=>{
+            console.log(e, $('.inp')[0].value)
+            socket.emit('client-send', $('.inp')[0].value)
+            $('.inp')[0].value = ''
+    })
+</script>
+</html>

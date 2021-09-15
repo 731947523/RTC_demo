@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:1聊天  look socket</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        .div{
+            /* position: fixed; */
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .promat{
+            position: fixed;
+            background: rgba(0,0,0,0.4);
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 200px;
+            transform: translateX(-200px) translateY(-100px);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>socket</h1>
+    <p class="role">用户名：<input type="text"></p>
+    房间ID
+    <input type="text" class="room">
+    <button class="connect"> 链接 </button>
+    <ul class="oUl">
+
+    </ul>
+    <div class="div">
+        <input type="text" class="inp">
+        <button class="but">
+            发送
+        </button>
+    </div>
+</body>
+<script type="module" src="./../../node_modules/socket.io/client-dist/socket.io.js"></script>
+<script type="module" src="./index.js"></script>

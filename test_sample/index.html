@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>    
+class Teacher {
+    constructor(){
+    }
+
+    sleep(value){
+        console.log('Teacher sleep.....')
+    }
+    eat(){
+        console.log('Teacher eat.....')
+    }
+}
+
+class Family {
+    constructor(){
+        this.a = 'dsf'
+    }
+
+    house(){
+        console.log('Family is house.....')
+    }
+    eat(){
+        console.log('Family eat.....')
+    }
+}
+const mix = function(...mixins) {
+    class Mix {
+        constructor(){
+            for (let mixin of mixins) {
+                copyProperties(this, new mixin()) 
+            }
+        }
+    }
+    return Mix
+}
+
+function copyProperties(source, target){
+    Object.getOwnPropertyNames(target).forEach(key => {
+        source[key] = target[key]
+    })
+    Object.getOwnPropertyNames(target.__proto__).forEach(key=>{
+        if(key != 'constructor' && !source.__proto__.hasOwnProperty(key)){
+            console.log('ele.....', key);
+            source.__proto__[key] = target[key]
+        }
+    })
+}
+
+    // class Student extends Family {
+    class Student extends mix( Family,Teacher) {
+        constructor(){
+            super()
+
+            this.age = 18
+        }
+        house(){
+          console.log('Student in house....');  
+        }
+
+        setName(value){
+            this.name = value
+        }
+
+        setAge(value){
+            this.age = value
+        }
+        
+        log(){
+            console.log('only this----',this)
+        }
+    }
+
+
+
+
+    let stu1 = new Student()
+    window.ly = stu1
+    console.log(stu1, 'look');
+    console.log(stu1.a, 'look');
+    console.log(stu1.eat(), 'look');
+    
+
+</script>
+</html>
