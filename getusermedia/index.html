@@ -5,8 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="./vhall-jssdk-interaction-2.3.4.js"></script>
-    <!-- <script src="//static.vhallyun.com/jssdk/vhall-jssdk-interaction/latest/vhall-jssdk-interaction-2.3.3.js"></script> -->
     <style>
         *{
             margin: 0;
@@ -24,24 +22,14 @@
     </style>
 </head>
 <body>
-    
-    查看订阅
-    <button id="play" @click='play'>播放</button>
-    <button id="full" >全屏</button>
-    <button id="exit">瑞出</button>
-    <div id="remote" ></div>
-    <!-- <div>
-        <h1>getuserMedia参数</h1>
-        <ul>
-            <li>
-                采集视频
-                <input type="checkbox" name="video" id="video">
-            </li>
-        </ul>
+    <div>
+        <button class="start">采集</button>
+        <!-- <h1>getuserMedia参数</h1> -->
     </div>
     <div class="wrap">
         <video src="" id="localVideo"></video>
-    </div> -->
+        <canvas width="720" height="480" id="canvas"></canvas>
+    </div>
 </body>
 <script src="./index.js"></script>
 </html>

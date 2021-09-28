@@ -26,6 +26,7 @@
     "socket.io-client": "^4.2.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.15.6",
     "eslint": "^7.32.0",
     "pre-commit": "^1.2.2"
   },
