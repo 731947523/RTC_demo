@@ -1,0 +1,44 @@
+{
+  "name": "webRTC",
+  "version": "1.0.0",
+  "description": "练习webrtc相关内容",
+  "author": "731947523@qq.com",
+  "private": true,
+  "scripts": {
+    "lint": "eslint video_RTCPeerConnection --ext .js",
+    "fix": "eslint video_RTCPeerConnection --ext .js --fix"
+  },
+  "pre-commit": [
+    "lint",
+    "fix"
+  ],
+  "dependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.5",
+    "express": "^4.17.1",
+    "koa": "^2.13.1",
+    "koa-html-render": "^1.0.3",
+    "koa-route": "^3.2.0",
+    "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
+    "node-static": "^0.7.11",
+    "nodemon": "^2.0.12",
+    "serve-index": "^1.9.1",
+    "socket.io": "^4.2.0",
+    "socket.io-client": "^4.2.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.15.6",
+    "eslint": "^7.32.0",
+    "pre-commit": "^1.2.2"
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<script>
+		function getImage(url) {
+			var myImage = new Image(600, 200);
+			myImage.src = url;
+			document.body.appendChild(myImage);
+		}
+		<!-- getImage('https://www.baidu.com/img/dong_30a61f45c8d4634ca14da8829046271f.gif'); -->
+		getImage('lena512color.jpg');
+	</script>
+</body>
+
+</html>

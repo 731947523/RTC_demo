@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Texture Source Canvas</title>
+    </head>
+<body>
+    <h4>需先设置美颜等级</h4>
+    value: <span class="span"></span>
+    <input type="range" value="0" max='10' min="0" id="slider">
+    <button class="but">start beauty</button>
+    <button class="close">close beauty</button>
+    <video class="video" src="" autoplay controls width="1280" height="720"></video>
+
+    <script src="./beauty_string.js"></script>
+    <script src="./beauty.js"></script>
+<script>
+    window.onload = function(){
+
+        let captureMediaStream = null
+        let captureVideo = document.querySelector('.video')
+        let virtualVideo = document.createElement('video')
+        let bea = new window.Beauty()
+
+        bea.init(virtualVideo)
+
+
+        var slider = document.querySelector('#slider')
+        slider.onchange = function(){
+            document.querySelector('.span').innerText = `0.${slider.value}`
+            bea.setBeautyLevel(`0.${slider.value}`)
+        }
+
+        function replaceStream(){
+            let canvasStream =  bea.getCap()
+            let newVideoTracks = canvasStream.getVideoTracks()[0]
+            let oldVideoTracks = captureMediaStream.getVideoTracks()[0]
+            captureMediaStream.removeTrack(oldVideoTracks)
+            captureMediaStream.addTrack(newVideoTracks)
+        }
+
+        document.querySelector('.but').addEventListener('click', ()=>{
+            document.querySelector('.but').disabled = true
+            document.querySelector('.close').disabled = false
+
+           
+            let cloneStream = new MediaStream()
+
+
+
+            navigator.mediaDevices.getUserMedia({video: {width: 1280, height: 720 }, audio: false}).then(mediaStream => {
+                cloneStream.addTrack(mediaStream.getVideoTracks()[0])
+                virtualVideo.srcObject = mediaStream
+                virtualVideo.play()
+
+                // captureMediaStream = cloneStream
+                captureVideo.srcObject = cloneStream
+                bea.draw(virtualVideo)
+                // replaceStream()
+                cloneStream.removeTrack(cloneStream.getVideoTracks()[0])
+                cloneStream.addTrack(bea.getCap().getVideoTracks()[0])
+                
+            })
+        })
+
+        document.querySelector('.close').addEventListener('click', ()=>{
+            document.querySelector('.but').disabled = false
+            document.querySelector('.close').disabled = true
+            bea.setBeautyLevel(0)
+        })
+
+        
+    }
+</script>
+</body>
+<html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    window.onload = function(){
+        class Base3 {
+    constructor(){
+        this.text2 = 'df'
+    }
+}
+
+class Base extends Base3 {
+    constructor(){
+        super()
+        this.text = '这是一个最基本的类'
+    }
+
+    getName(){
+        console.log('获取放')
+    }
+}
+// class Base2 {
+//     constructor(){
+//         this.text3 = '这是一个最基本的类 222222'
+//     }
+// }
+
+
+let Mixin = (SuperClass = null)=>{
+    SuperClass = SuperClass || class Empty{}
+    return class extends SuperClass {
+        constructor(){
+            super()
+        }
+    }
+}
+
+// class NameCxs extends Mixin(Base){
+//     constructor(){
+//         super()
+//         console.log('这个是基本name 类 ')
+//         console.log('在基本 Name 类里打印Base 类', this.text)
+//     }
+// }
+class Base2 extends Base{
+    constructor(){
+        super()
+    }
+    getName1(){
+        console.log('获取放')
+    }
+}
+let namea = new Base2()
+window.namea = namea
+console.log('????--', namea, namea.getName1())
+
+    }
+</script>
+</html>

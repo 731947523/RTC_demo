@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .video-wrap{
+            width: 400px;
+            height: 400px;
+            position: relative;
+            margin: 0 auto;
+            /* position:absolute; */
+        }
+        .video-wrap video{
+            width: 100%;
+        }
+        .barrage_1{
+            position: absolute;
+            top: 2px;
+            color: red;
+            z-index: 1;
+            transition: left 2s;
+            left: 100%;
+            transform: translateX(0);
+            white-space: nowrap;
+        }
+        .to{
+            left: 0;
+            transform: translateX(-100%);
+        }
+        #canvas{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-wrap">
+        <video class="video" controls loop src="https://www.w3school.com.cn/example/html5/mov_bbb.mp4"></video>
+        <button class="play">播放</button>
+        <button class="pause">暂停</button>
+        <!-- <p class="barrage_1">弹幕1</p> -->
+        <canvas id="canvas" width="400" height="220"></canvas>
+    </div>
+    <script>
+        class Barrage {
+            constructor(option){
+                let { video, canvas } = option
+
+                if(!video || !canvas){
+                    return alert('')
+                }
+                this.video = video
+                this.canvas = canvas
+                this.init()
+            }
+            
+            // 初始化canvas
+            init(){
+                this.canvas.width = this.video.clientWidth
+                this.canvas.height = this.video.clientHeight
+                this.ctx = canvas.getContext('2d')
+            }
+
+            // 发送弹幕
+            barrageSend(opt){
+                this.params = opt
+                // 获取弹幕的宽度
+                let op = document.createElement('span')
+                
+                op.innerHTML = opt.value
+                document.body.appendChild(op)
+                this.offsetWidth = op.offsetWidth
+                document.body.removeChild(op)
+
+                this.barrageAttribute(opt)
+                this.render()
+            }
+
+            barrageAttribute(opt){
+                this.ctx.fillStyle = opt.color || 'black'
+                this.ctx.font = `${opt.fontSize || 14}px normal`
+                // 弹幕范围 全部/顶部
+                this.barrageScope = ['all', 'top']
+                if(this.barrageScope.indexOf(opt.scope)){
+                    this.onlyScope = scope
+                }else{
+                    this.onlyScope = this.barrageScope[0]
+                }
+            }
+            // 清除绘画
+            barrageClear(){
+                this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height)
+            }
+        
+            // 渲染
+            render(){
+                console.log(this.canvas.width);
+
+                let top = 0
+                if( this.onlyScope == 'all') top = Math.floor(Math.random()*180 + 10 )
+                if( this.onlyScope == 'top') top = Math.floor(Math.random()*60 + 10 )
+                this.barrageSpeed(top)  
+            }
+
+            barrageSpeed(top){
+                let number = 0
+                let a = setInterval(() => {
+                    console.log('停止---', top)
+                    number += 2
+                    if(number >= this.canvas.width){
+                        clearInterval(a)
+                    }
+                    this.barrageClear()
+                    this.ctx.fillText(this.params.value, number , top)
+                }, 20);
+            }
+        
+            // 动态设置canvas宽高
+            setCanvas(w,h){
+                if(!w || !h){
+                    return {code: '', message: '参数异常'}
+                }
+                this.canvas.width = w
+                this.canvas.height = h
+            }
+
+        }
+        let video = document.querySelector('.video')
+        let canvas = document.querySelector('#canvas')
+        let localBarrage = new Barrage({video,canvas})
+        console.log(localBarrage, 'look');
+        setTimeout(() => {
+            localBarrage.barrageSend({
+                value:' 我是一条弹幕',
+                fontSize: '14',
+                color: 'red',
+                scope: 'all'
+            })
+        }, 1000);
+    </script>
+    <!-- <script>
+        window.onload = function(){
+            /* 
+            *   value: 文本
+            *   font：字体大小
+            *   color: 颜色
+            *   opcity：透明度
+            *   time: 滚动时间
+            *   speed：滚动速度
+            */
+            document.querySelector('.play').addEventListener('click', function(){
+                document.querySelector('.video').play()
+            })
+            document.querySelector('.pause').addEventListener('click', function(){
+                document.querySelector('.video').pause()
+            })
+
+            let barrages = [
+                {value: '周杰伦的听妈妈的话，让我反复循环再循环',x:20, time: 5, color: 'red', speed: 1, fontSize: 27},
+                // {value: '想快快长大，才能保护她', time: 10, color: '#00a1f5', speed: 1, fontSize: 16},
+                // {value: '听妈妈的话吧，晚点再恋爱吧！爱呢？', speed: 1, time: 15}
+            ]
+            let canvasDom = document.querySelector('#canvas')
+            const ctx = canvasDom.getContext('2d')
+            
+            // let a = setInterval(() => {
+            //     if(barrages[0].x > 300){
+            //         clearInterval(a)
+            //     }  
+            //     barrages[0].x += 2
+            //     render()
+            // }, 10);
+            function render() {
+                // ctx.clearRect(0, 0, 400, 200)
+                barrages.forEach((ele, index)=>{
+                    ele.fontSize ? ctx.font = ele.fontSize + 'px normal' : ctx.font = '12px normal'
+                    console.log(ctx.font);
+                    ctx.strokeText(ele.value, 50 , 50+ 30 * index)
+                    if(index==0){
+                        ctx.clearRect(0, 0, 400, 200)
+                        ctx.strokeText(ele.value, ele.x , 50+ 30 * index)
+                    }
+                })
+            }
+        }
+    </script> -->
+    <!-- <script>
+        // Css + Dom
+        window.onload = function(){
+            let barrageBox = document.createElement('barrage-wrap')
+            setTimeout(() => {
+                document.querySelector('.barrage_1').style.left = 0
+                document.querySelector('.barrage_1').style.transform = 'translateX(-100%)'
+
+            }, 100);
+
+        }
+    </script> -->
+</body>
+</html>

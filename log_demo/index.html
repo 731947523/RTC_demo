@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<!-- <script src="./index.js"></script> -->
+<script src="./test.js"></script>
+<script>
+    let i = 0
+    console.log(cxsLogger);
+    let set = setInterval(() => {
+        i++
+        // cxsLog.info('打印的INFO信息', i)
+        // cxsLog.warn('打印的warn信息', i)
+        // cxsLog.error('打印的error信息', i)
+        if(i>200){
+            clearTimeout(set)
+        }
+    }, 1000);
+    // 打印日志相关
+    // 设置日志级别
+    // cxsLog.setLogLevel('INFO');
+    
+    
+    // 此日志不会输出（当BASE.setLogLevel(BASE.LOG_LEVEL.DEBUG);时会输出）
+</script>
+</html>
