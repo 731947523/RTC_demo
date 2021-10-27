@@ -14,6 +14,9 @@ class Beauty{
 
         this.beautyLevel = 0.0
         this.beautyId = null // 美颜的ID 唯一标识
+        this.hidden = document.hidden
+        this.listener()
+        this.isDestroy = false
     }
 
 
@@ -22,8 +25,17 @@ class Beauty{
         this.canvas.setAttribute('id', 'beautyCanvas')
         this.canvas.setAttribute('width', canvasOpt && canvasOpt.width || 1280)
         this.canvas.setAttribute('height', canvasOpt && canvasOpt.height || 720)
-        document.querySelector('.canvasWrap').append(this.canvas)
+        // document.querySelector('.canvasWrap').append(this.canvas)
     }
+    
+    listener(){
+        document.addEventListener('visibilitychange', () => {
+            // console.log('visibilitychange', document.hidden)
+            this.hidden = document.hidden
+            if(!this.isDestroy) this.startDraw()
+        })
+    }
+
 
     setupContext() {
         try {
@@ -37,6 +49,7 @@ class Beauty{
     }
 
     init(source, opt){
+        this.isDestroy = false
         if(!source){
             // 进行修改promise
             return console.error('不存在Video来源，请确认')
@@ -61,8 +74,33 @@ class Beauty{
         this.gl.bindTexture(this.gl.TEXTURE_2D, null)
     }
 
+    startDraw(){
+        if(!this.gl) {
+            return
+        }
+        if(this.hidden){
+            if(this.beautyId){
+                cancelAnimationFrame(()=>{this.draw()})
+            }
+            setInterval(()=>{console.log('???')},1000)
+            this.intervalId = setInterval(() => { 
+                this.draw() 
+            }, 40)
+        }else{
+          if(this.intervalId) {
+            clearInterval(this.intervalId)
+            this.intervalId = null
+          }
+          this.draw()
+        }
+      }
+    
+
     draw () {
-        this.beautyId = requestAnimationFrame(()=>{this.draw()})
+        if(!this.hidden){
+            this.beautyId = requestAnimationFrame(()=>{this.draw()})
+        }
+        console.log(this.intervalId? '定时器' : 'Animation')
         // vertex data
         var vertexBuffer = this.gl.createBuffer()
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vertexBuffer)
@@ -109,6 +147,19 @@ class Beauty{
         this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0)
     }
 
+    destroy(captureMediaStream, cloneStream){
+        cloneStream.addTrack(captureMediaStream.getVideoTracks()[0])
+        cloneStream.removeTrack(cloneStream.getVideoTracks()[0])
+        this.isDestroy = true 
+        if(this.beautyId){
+            cancelAnimationFrame(this.beautyId)
+            this.beautyId = null
+        }else if(this.intervalId){
+            clearInterval(this.intervalId)
+            this.intervalId = null
+        }
+    }
+
     setBeautyLevel(level){
         this.beautyLevel = level
     }
@@ -117,7 +168,6 @@ class Beauty{
         window.canvas = this.canvas.captureStream(frameRate)
         return this.canvas.captureStream(frameRate)
     }
-
 
     /* init shader begain */
     initShaders() {
@@ -151,14 +201,6 @@ class Beauty{
         return shader
     }
     /* init shader end */
-
-    destoryBeauty(){
-        if(this.beautyId){
-            cancelAnimationFrame(this.beautyId)
-        }else{
-            console.error('请确保美颜功能开启')
-        }
-    }
 }
 
 window.Beauty = Beauty

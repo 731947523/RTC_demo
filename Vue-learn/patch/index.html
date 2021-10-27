@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patch 算法</title>
+</head>
+<body>
+    <script>
+        let oldCh = ['a', 'b', 'd', 'f', 'g']
+        let newCh = ['a','g', 'd','dsfs','df', 'b', 'dl', 'f', 'gd']
+        let count = 0
+
+        let finaly = []
+
+        function isEqual(a, b){
+            return a === b
+        }
+        /* 
+        *   核心：  双向索引     两两比较
+         */
+        function patch(oldCh, newCh){
+            console.log(`oldCh----${JSON.stringify(oldCh)}, newCh---${JSON.stringify(newCh)}`);
+            let oldStartIndex = 0
+            let oldEndIndex = oldCh.length - 1
+            let newStartIndex = 0
+            let newEndIndex = newCh.length - 1
+
+            let newStartValue = newCh[0]
+            let newEndValue = newCh[newEndIndex]
+            let oldStartValue = oldCh[0]
+            let oldEndValue = oldCh[oldEndIndex]
+
+            
+
+            while(oldStartIndex <= oldEndIndex && newStartIndex <= newEndIndex){
+                console.log(oldStartIndex , oldEndIndex, newStartIndex , newEndIndex);
+                if(isEqual(oldStartValue, newStartValue)){
+                    // finaly.push(newStartValue)
+                    oldStartValue = oldCh[++oldStartIndex]
+                    newStartValue = newCh[++newStartIndex]
+                }else if(isEqual(oldEndValue, newEndValue)){
+                    // finaly.push(oldEndValue)
+                    oldEndValue = oldCh[--oldEndIndex]
+                    newEndValue = newCh[--newEndIndex]
+                }else if(isEqual(oldStartValue, newEndValue)){
+                    // 老的开始和新的结尾相同   要进行移动，
+                    
+                    oldStartValue = oldCh[++oldStartIndex]
+                    newEndValue = newCh[--newEndIndex]
+                }else if(isEqual(oldEndValue, newStartValue)){
+                    // finaly.push(oldEndValue)
+                    oldEndValue = oldCh[--oldEndIndex]
+                    newStartValue = newCh[++newStartIndex]
+                }else{
+                    // 上述四种都不存在的  开始双重for循环进行查找
+                    
+                }
+                console.log(newStartValue, newEndValue, oldStartValue, oldEndValue);
+                
+                count++
+                if(count>70){
+                    return
+                }
+                console.log('开始比较')
+            }
+
+        }
+
+        patch(oldCh, newCh)
+
+        console.log(finaly, 'end');
+
+
+
+
+    </script>
+    
+</body>
+</html>

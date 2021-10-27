@@ -53,6 +53,8 @@
                 virtualVideo.srcObject = mediaStream
                 virtualVideo.play()
 
+                window.oldStream = mediaStream
+                
                 // captureMediaStream = cloneStream
                 captureVideo.srcObject = cloneStream
                 bea.draw(virtualVideo)
