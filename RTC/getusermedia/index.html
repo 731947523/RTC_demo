@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="//static.vhallyun.com/jssdk/vhall-jssdk-interaction/latest/vhall-jssdk-interaction-2.3.5.js"></script>
+    <!-- <script src="//static.vhallyun.com/jssdk/vhall-jssdk-interaction/latest/vhall-jssdk-interaction-2.3.5.js"></script> -->
     <title>Document</title>
     <style>
         *{
@@ -22,14 +22,22 @@
         }
     </style>
 </head>
+
+<script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script>
+<script>
+  // VConsole will be exported to `window.VConsole` by default.
+  var vConsole = new window.VConsole();
+</script>
 <body>
     <div>
         <button class="start">采集</button>
         <!-- <h1>getuserMedia参数</h1> -->
     </div>
     <div class="wrap">
+        <button id="mute">mute设置</button>
         <video src="" id="localVideo"></video>
-        <canvas width="720" height="480" id="canvas"></canvas>
+
+        <video src="" id='newMe' autoplay controls></video>
     </div>
 </body>
 <script src="./index.js"></script>

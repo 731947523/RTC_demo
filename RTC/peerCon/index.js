@@ -41,7 +41,8 @@ function startClick(){
     navigator.mediaDevices.getUserMedia({video: true,audio:false}).then(handleMedia).catch(failMedia)
 }
 
-function getRemoteStream(e){
+function getRemoteStream(e,s){
+    console.error('远端的信息----', e,s)
     remoteVideo.srcObject = e.streams[0]
 }
 

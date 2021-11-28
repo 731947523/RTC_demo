@@ -11,5 +11,10 @@
     <video id="localVideo" autoplay class="local"></video>
     <video id="remoteVideo" muted autoplay class="remote"></video>
 </body>
-<script src='./index.js'></script>
+<script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script>
+<script>
+  // VConsole will be exported to `window.VConsole` by default.
+  var vConsole = new window.VConsole();
+</script>
+<!-- <script src='./index.js'></script> -->
 </html>

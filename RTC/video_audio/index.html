@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态创建video或者audio</title>
+</head>
+<body>
+    <button class="start">采集</button>
+    <label>audio</label>
+    <input  type="radio" id="audio" name="contact" value="email">
+    <div class="box"></div>
+</body>
+<script>
+    let start = document.querySelector('.start')
+    let box = document.querySelector('.box')
+
+    function createElement(type){
+        let _type = document.createElement(type);
+        _type.setAttribute('autoplay', true)
+        box.append(_type)
+    }
+
+    start.addEventListener('click', ()=>{
+        let constraints = {
+            video: {
+                with: 480,
+                height: 360
+            },
+            audio: false
+        }
+        if(document.querySelector('#audio').checked){
+            constraints.audio = true
+        }
+        navigator.mediaDevices.getUserMedia(constraints).then(mediaStream=>{
+            console.log(mediaStream,'mediaStream',mediaStream.getTracks());
+            // 此应根据传入是创建Video  还是 Audio。不应根据流内容去创建相关Dom
+            mediaStream.getTracks().forEach(track => {
+                // if(track.kind == 'video'){
+                //     createElement('video')
+                // }
+                // if(track.kind == 'audio'){
+                //     createElement('audio')
+                // }
+            });
+            
+            setTimeout(() => {
+                document.querySelector('video').srcObject = mediaStream
+            }, 500);
+            // local.srcObject = mediaStream
+            // local.onloadedmetadata = function(e) {
+            //     local.play()
+            // }
+        }).catch(err=>{
+            console.log('获取失败---',err)
+        })
+    })
+</script>
+</html>

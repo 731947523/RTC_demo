@@ -1,13 +1,13 @@
 module.exports = {
-    'env':{
+    env:{
         'browser': true,
         'node': true,
         'commonjs': true,
-        'es6': true,
+        es6: true,
         'amd': true
     },
-    'rules': {
+    rules: {
         'semi': ['warn', 'never'],
-        'quotes': ['error', 'single']
+        'quotes': ['error', 'single', { 'allowTemplateLiterals': true }], // 单引号  ` ` 都可以, 'backtick'
     }
 }
